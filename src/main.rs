@@ -9,9 +9,7 @@ pub struct Produto {
 }
 
 pub struct Catalogo {
-    
     pub produtos_por_id: HashMap<u32, Produto>,
-    
     pub produtos_por_categoria: HashMap<String, Vec<u32>>, 
 }
 
@@ -27,7 +25,6 @@ impl Catalogo {
         let id = produto.id;
         let categoria = produto.categoria.clone(); 
 
-        
         self.produtos_por_id.insert(id, produto);
 
         self.produtos_por_categoria
@@ -36,13 +33,14 @@ impl Catalogo {
             .push(id);
     }
 
-  
+    pub fn buscar_por_id(&self, id: u32) -> Option<&Produto> {
+        self.produtos_por_id.get(&id)
+    }
+
     pub fn buscar_por_categoria(&self, categoria: &str) -> Vec<&Produto> {
         let mut resultados = Vec::new(); 
         
-      
         if let Some(ids_encontrados) = self.produtos_por_categoria.get(categoria) {
-            
             for id in ids_encontrados {
                 if let Some(produto) = self.produtos_por_id.get(id) {
                     resultados.push(produto);
@@ -57,7 +55,6 @@ impl Catalogo {
 fn main() {
     let mut meu_catalogo = Catalogo::novo();
 
-  
     meu_catalogo.adicionar_produto(Produto { id: 1, nome: String::from("Teclado Mecânico"), categoria: String::from("Eletrônicos"), preco: 250.50 });
     meu_catalogo.adicionar_produto(Produto { id: 2, nome: String::from("Cadeira Ergonômica"), categoria: String::from("Móveis"), preco: 1200.00 });
     meu_catalogo.adicionar_produto(Produto { id: 3, nome: String::from("Mouse Gamer"), categoria: String::from("Eletrônicos"), preco: 150.00 });
@@ -68,7 +65,6 @@ fn main() {
     let categoria_busca = "Eletrônicos";
     println!("Buscando produtos da categoria: '{}'...", categoria_busca);
 
-  
     let produtos_encontrados = meu_catalogo.buscar_por_categoria(categoria_busca);
 
     if produtos_encontrados.is_empty() {
@@ -80,16 +76,15 @@ fn main() {
     }
 }
 
-
-
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    // Apague o "use super::*;" e coloque esta linha no lugar:
+    use crate::{Catalogo, Produto}; 
 
     #[test]
     fn teste_adicionar_e_buscar_por_id() {
         let mut catalogo = Catalogo::novo();
+        // ... (o resto do código continua igualzinho)
         let produto = Produto { 
             id: 99, 
             nome: String::from("Monitor Ultrawide"), 
@@ -99,9 +94,7 @@ mod tests {
         
         catalogo.adicionar_produto(produto);
 
-        
         let resultado = catalogo.buscar_por_id(99);
-        
         
         assert!(resultado.is_some()); 
         assert_eq!(resultado.unwrap().nome, "Monitor Ultrawide");
@@ -116,7 +109,6 @@ mod tests {
 
         let resultados = catalogo.buscar_por_categoria("Livros");
         
-    
         assert_eq!(resultados.len(), 2);
     }
 }
