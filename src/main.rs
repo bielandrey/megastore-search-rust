@@ -78,13 +78,13 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    // Apague o "use super::*;" e coloque esta linha no lugar:
+    
     use crate::{Catalogo, Produto}; 
 
     #[test]
     fn teste_adicionar_e_buscar_por_id() {
         let mut catalogo = Catalogo::novo();
-        // ... (o resto do código continua igualzinho)
+      
         let produto = Produto { 
             id: 99, 
             nome: String::from("Monitor Ultrawide"), 
